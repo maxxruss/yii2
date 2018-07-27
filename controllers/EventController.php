@@ -57,6 +57,16 @@ class EventController extends Controller
         ]);
     }
 
+
+    public function actionJson($id)
+    {
+        return $this->render('json', [
+            'model' => $this->findModel($id),
+            //'model' => $this->findModel($id),
+            //'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Creates a new Event model.
      * If creation is successful, the browser will be redirected to the 'view' page.

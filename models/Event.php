@@ -24,6 +24,7 @@ class Event extends \yii\db\ActiveRecord
         return 'event';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -43,11 +44,11 @@ class Event extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'start_at' => 'Start At',
-            'end_at' => 'End At',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => 'Наиманование',
+            'start_at' => 'Начало напоминания',
+            'end_at' => 'Окончание напоминания',
+            'created_at' => 'Создано',
+            'updated_at' => 'Последнее обновление',
         ];
     }
 }
