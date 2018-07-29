@@ -8,6 +8,8 @@ use app\models\EventSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+
 
 /**
  * EventController implements the CRUD actions for Event model.
@@ -57,14 +59,27 @@ class EventController extends Controller
         ]);
     }
 
+    /**@param int $id
+     * @return Response
+     * @throws NotFoundHttpException
+    **/
 
-    public function actionJson($id)
+    public function actionJson($id): Response
     {
-        return $this->render('json', [
-            'model' => $this->findModel($id),
+
+        //$request = \Yii::$app->GetRequest();
+        //$id = (int) $request->getQueryParam('id');
+        $model = $this->FindModel($id);
+
+        return $this->asJson($model->getAttributes());
+
+        /**return $this->render('json', [
+            //'model' => $this->findModel($id),
+            'model' => $this->asJson($model->getAttributes()),
             //'model' => $this->findModel($id),
             //'model' => $this->findModel($id),
-        ]);
+        ])**/
+        ;
     }
 
     /**
