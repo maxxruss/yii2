@@ -2,13 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\Event;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+
 
 class SiteController extends Controller
 {
@@ -61,6 +64,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        /**$db = \Yii::$app->getDb();
+
+        $result = $db->createCommand('SELECT * FROM event')->queryOne();
+        d($result);
+
+        $result = Event::find()
+            ->andWhere(['id'=>'1'])
+            ->one();**/
+
+        $query = Event::findOne(['id'=>'2']);
+        //print_r($query);
+        //exit;
+        //foreach ($query->each() as $model) {
+         //   echo($model->start_at).'<br>';
+        //}
+
+//exit;
         return $this->render('index');
     }
 
