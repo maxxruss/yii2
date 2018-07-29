@@ -10,7 +10,8 @@ use yii\db\ActiveRecord;
  * @property string $username
  * @property string $password
  * @property string $access_token
- * @property Note[] $notes
+ * @property string $authKey
+ * @property Event[] $events
  */
 
 
@@ -116,5 +117,13 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $this->saltPassword($password);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getEvents(): ActiveQuery
+    {
+        return $this->hasMany(Event::class, ['author_id' => 'id']);
     }
 }

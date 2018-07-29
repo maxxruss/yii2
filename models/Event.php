@@ -3,19 +3,25 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveQuery;
+
 
 /**
  * This is the model class for table "event".
  *
  * @property int $id
- * @property string $name
- * @property string $start_at
- * @property string $end_at
- * @property string $created_at
- * @property string $updated_at
+ * @property string $name Наиманование
+ * @property string $start_at Начало напоминания
+ * @property string $end_at Окончание напоминания
+ * @property string $created_at Создано
+ * @property string $updated_at Последнее обновление
+ * @property int $author_id
+ * @property User $author
  */
 class Event extends \yii\db\ActiveRecord
 {
+    public $ids = [];
+
     /**
      * {@inheritdoc}
      */
@@ -24,15 +30,15 @@ class Event extends \yii\db\ActiveRecord
         return 'event';
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['name', 'start_at', 'end_at'], 'required'],
-            [['start_at', 'end_at', 'created_at', 'updated_at'], 'safe'],
+            ['id', 'integer'],
+            ['ids', 'integer'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -50,5 +56,13 @@ class Event extends \yii\db\ActiveRecord
             'created_at' => 'Создано',
             'updated_at' => 'Последнее обновление',
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getAuthor(): ActiveQuery
+    {
+        return $this->hasOne(User::class, ['id' => 'author_id']);
     }
 }

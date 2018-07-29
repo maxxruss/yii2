@@ -71,16 +71,16 @@ class SiteController extends Controller
 
         $result = Event::find()
             ->andWhere(['id'=>'1'])
-            ->one();**/
+            ->one();
 
         $query = Event::findOne(['id'=>'2']);
-        //print_r($query);
-        //exit;
-        //foreach ($query->each() as $model) {
-         //   echo($model->start_at).'<br>';
-        //}
+        print_r($query);
+        exit;
+        foreach ($query->each() as $model) {
+           echo($model->start_at).'<br>';
+        }
 
-//exit;
+//exit;**/
         return $this->render('index');
     }
 

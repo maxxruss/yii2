@@ -54,6 +54,12 @@ class EventController extends Controller
      */
     public function actionView($id)
     {
+        //$event = Event::find()->andWhere(['event.id'=>$id])->joinWith(['author'])->one();
+        $event = $this->findModel($id);
+        $author = $event->author;
+        $events = $author->events;
+        //d($author, $events);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
