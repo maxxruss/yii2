@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Event;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -64,7 +65,15 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        /**$db = \Yii::$app->getDb();
+        /**$result = Yii::$app->db->createCommand('SELECT name FROM event WHERE id=1 ')
+            ->queryAll();
+        $result = (new \yii\db\Query())
+        ->select('id, name')
+        ->from('event')
+        ->where('id=1')
+        ->all();
+
+        $db = \Yii::$app->getDb();
 
         $result = $db->createCommand('SELECT * FROM event')->queryOne();
         d($result);
@@ -81,7 +90,9 @@ class SiteController extends Controller
         }
 
 //exit;**/
-        return $this->render('index');
+        return $this->render('index', [
+            'result' => $result,
+        ]);
     }
 
     /**
