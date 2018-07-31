@@ -65,9 +65,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        /**$result = Yii::$app->db->createCommand('SELECT name FROM event WHERE id=1 ')
+        $result = Yii::$app->db->createCommand('SELECT name FROM event WHERE id=1 ')
             ->queryAll();
-        $result = (new \yii\db\Query())
+        /**$result = (new \yii\db\Query())
         ->select('id, name')
         ->from('event')
         ->where('id=1')
