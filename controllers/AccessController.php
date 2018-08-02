@@ -1,14 +1,12 @@
 <?php
-
 namespace app\controllers;
-
+use app\objects\ViewModels\AccessCreateView;
 use Yii;
 use app\models\Access;
-use app\models\search\AccessSearch;
+use app\models\search\AccessSearch as AccessSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 /**
  * AccessController implements the CRUD actions for Access model.
  */
@@ -28,7 +26,6 @@ class AccessController extends Controller
             ],
         ];
     }
-
     /**
      * Lists all Access models.
      * @return mixed
@@ -37,13 +34,11 @@ class AccessController extends Controller
     {
         $searchModel = new AccessSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
     /**
      * Displays a single Access model.
      * @param integer $id
@@ -56,7 +51,6 @@ class AccessController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
     /**
      * Creates a new Access model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -65,16 +59,14 @@ class AccessController extends Controller
     public function actionCreate()
     {
         $model = new Access();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('create', [
             'model' => $model,
+            'viewModel' => new AccessCreateView(),
         ]);
     }
-
     /**
      * Updates an existing Access model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -85,16 +77,14 @@ class AccessController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
+            'viewModel' => new AccessCreateView(),
         ]);
     }
-
     /**
      * Deletes an existing Access model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -105,10 +95,8 @@ class AccessController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
-
     /**
      * Finds the Access model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -121,7 +109,6 @@ class AccessController extends Controller
         if (($model = Access::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -1,11 +1,8 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Access */
-
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Accesses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -29,8 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'note_id',
-            'user_id',
+            'user.username',
+            'note.name:raw',
         ],
     ]) ?>
 

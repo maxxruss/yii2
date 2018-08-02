@@ -6,15 +6,18 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Access */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $viewModel AccessCreateView */
+
 ?>
 
 <div class="access-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'note_id')->textInput() ?>
+    <?= $form->field($model, 'note_id')->dropDownList($viewModel->getNoteOptions()) ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <?= $form->field($model, 'user_id')->dropDownList($viewModel->getUserOptions()) ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

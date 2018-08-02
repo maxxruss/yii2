@@ -19,17 +19,31 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Access', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?=\yii\widgets\ListView::widget([
+        'dataProvider' => $dataProvider,
+        //'itemView' => '_item',
+        // 'viewParams' => $viewModel,
+    ]);?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'note_id',
-            'user_id',
+            'note.name:raw',
+            [
+                'value' => function (\app\models\Access $model) {
+                    return Html::a($model->user->username, ['user/view', 'id' => $model->id]);
+                },
+                'format' => 'raw',
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template' => '{view}  {delete}',
+                'visibleButtons' => [
+                    'delete' => false,],
+            ]
         ],
     ]); ?>
 </div>

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Access */
+/* @var $viewModel AccessCreateView */
+
 
 $this->title = 'Update Access: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Accesses', 'url' => ['index']];
@@ -16,6 +18,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'viewModel' => $viewModel,
+
     ]) ?>
 
 </div>

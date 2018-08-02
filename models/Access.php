@@ -1,15 +1,15 @@
 <?php
-
 namespace app\models;
-
 use Yii;
-
+use yii\db\ActiveQuery;
 /**
  * This is the model class for table "access".
  *
  * @property int $id
  * @property int $note_id
  * @property int $user_id
+ * @property Note $note
+ * @property User $user
  */
 class Access extends \yii\db\ActiveRecord
 {
@@ -20,7 +20,6 @@ class Access extends \yii\db\ActiveRecord
     {
         return 'access';
     }
-
     /**
      * {@inheritdoc}
      */
@@ -31,7 +30,6 @@ class Access extends \yii\db\ActiveRecord
             [['note_id', 'user_id'], 'integer'],
         ];
     }
-
     /**
      * {@inheritdoc}
      */
@@ -42,5 +40,19 @@ class Access extends \yii\db\ActiveRecord
             'note_id' => 'Note ID',
             'user_id' => 'User ID',
         ];
+    }
+    /**
+     * @return ActiveQuery
+     */
+    public function getUser(): ActiveQuery
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+    /**
+     * @return ActiveQuery
+     */
+    public function getNote(): ActiveQuery
+    {
+        return $this->hasOne(Note::class, ['id' => 'note_id']);
     }
 }
