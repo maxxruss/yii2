@@ -8,6 +8,8 @@ use app\models\search\EventSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+
 
 /**
  * EventController implements the CRUD actions for Event model.
@@ -54,6 +56,24 @@ class EventController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionCalendar()
+    {
+        $searchModel = new EventSearch();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Event::find(),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+        return $this->render('calendar', [
+            //'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
