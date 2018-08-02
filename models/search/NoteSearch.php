@@ -41,7 +41,13 @@ class NoteSearch extends Note
      */
     public function search($params)
     {
-        $query = Note::find();
+        if (Yii::$app->user->identity) {
+            $query = Note::find()->andWhere(['author_id'=>Yii::$app->user->identity->id]);
+        } else {
+            $query = Note::find();
+        }
+
+
 
         // add conditions that should always apply here
 
