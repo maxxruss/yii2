@@ -1,6 +1,7 @@
 <?php
 namespace app\objects\ViewModels;
 use app\models\User;
+
 class NoteCreateView
 {
     /**

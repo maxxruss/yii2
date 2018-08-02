@@ -9,6 +9,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 
+
 <div class="note-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -23,3 +24,4 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+form
