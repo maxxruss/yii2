@@ -38,11 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
             ],
-
             ['class' => 'yii\grid\ActionColumn',
                 'template' => '{view}  {delete}',
                 'visibleButtons' => [
-                    'delete' => false,],
+                    'delete' => false
+                ],
             ]
         ],
     ]); ?>

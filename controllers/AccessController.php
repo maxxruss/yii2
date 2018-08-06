@@ -1,6 +1,8 @@
 <?php
 namespace app\controllers;
+
 use app\objects\ViewModels\AccessCreateView;
+use yii\filters\AccessControl;
 use Yii;
 use app\models\Access;
 use app\models\search\AccessSearch as AccessSearch;
@@ -24,6 +26,20 @@ class AccessController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], // авторизованные пользователи
+                    ],
+                    [
+                        'allow' => false,
+                        'roles' => ['?'], // гости
+                    ],
+                ],
+            ]
         ];
     }
     /**

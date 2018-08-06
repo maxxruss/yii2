@@ -41,18 +41,15 @@ class NoteSearch extends Note
      */
     public function search($params)
     {
-        if (Yii::$app->user->identity) {
-            $query = Note::find()->andWhere(['author_id'=>Yii::$app->user->identity->id]);
-        } else {
-            $query = Note::find();
-        }
-
-
+        $query = Note::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 2,
+            ]
         ]);
 
         $this->load($params);
@@ -71,7 +68,15 @@ class NoteSearch extends Note
             'author_id' => $this->author_id,
         ]);
         $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->leftJoin(['access' => 'access'], 'note.id = access.note_id');
+        $query->andWhere([
+            'or',
+            ['author_id' => \Yii::$app->user->getId()],
+            ['access.user_id' => \Yii::$app->user->getId()],
+        ]);
 
         return $dataProvider;
+
+
     }
 }

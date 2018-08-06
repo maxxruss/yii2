@@ -4,11 +4,13 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Event;
+use yii\filters\AccessControl;
 use app\models\search\EventSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 
 /**
@@ -28,6 +30,20 @@ class EventController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], // авторизованные пользователи
+                    ],
+                    [
+                        'allow' => false,
+                        'roles' => ['?'], // гости
+                    ],
+                ],
+            ]
         ];
     }
 
@@ -59,22 +75,63 @@ class EventController extends Controller
         ]);
     }
 
-    public function actionCalendar()
+    public function actionCalendar(): string
     {
-        $searchModel = new EventSearch();
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        {
+            $dates = [
+                '2018-08-01',
+                '2018-08-02',
+                '2018-08-03',
+                '2018-08-04',
+                '2018-08-05',
+                '2018-08-06',
+                '2018-08-07',
+                '2018-08-08',
+                '2018-08-09',
+                '2018-08-10',
+                '2018-08-11',
+                '2018-08-12',
+                '2018-08-13',
+                '2018-08-14',
+                '2018-08-15',
+                '2018-08-16',
+                '2018-08-17',
+                '2018-08-18',
+                '2018-08-19',
+                '2018-08-20',
+                '2018-08-21',
+                '2018-08-22',
+                '2018-08-23',
+                '2018-08-24',
+                '2018-08-25',
+                '2018-08-26',
+                '2018-08-27',
+                '2018-08-28',
+                '2018-08-29',
+                '2018-08-30',
+            ];
+            $notes = Event::find()
+                ->byDates($dates)
+                ->all();
+            $days = [];
+            foreach ($notes as $note) {
+                if (isset($days[$note->created_at])) {
+                    $days[$note->created_at] = [];
+                }
+                $days[$note->created_at][] = $note;
+            }
+            //$notes2 = Event::find()->select(['created_at'])->where('id=1')->one();
+            //$notes1 = date('Y-m-d.',strtotime($notes2->created_at));
+            //
+            return $this->render('calendar', [
+                'days' => $days,
+                //'notes' => $notes
+            ]);
+            // in calendar.php
+//
+        }
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => Event::find(),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-        ]);
 
-        return $this->render('calendar', [
-            //'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
     }
 
     /**

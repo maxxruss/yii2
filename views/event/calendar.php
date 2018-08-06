@@ -23,10 +23,19 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?php
+    /**var_dump($days);
+    exit;
+
+    foreach ($days as $day => $notes) {
+    			$count = count($notes);
+        echo($count).'<br>';
+    			//echo $count.'<br>';
+    		}
+exit;**/
     ?>
 
     <?= ListView::widget([
-        'dataProvider' => $dataProvider,
+        'dataProvider' => $days,
         'itemView' => '_item',
         'viewParams' => [
             'fullView' => true,

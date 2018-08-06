@@ -1,14 +1,20 @@
 <?php
 namespace app\controllers;
+
+use app\models\Access;
 use app\models\forms\NoteForm;
 use app\models\Note;
 use app\models\search\NoteSearch;
 use app\objects\ViewModels\NoteCreateView;
+use app\objects\ViewModels\NoteView;
 use Yii;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+
 /**
  * NoteController implements the CRUD actions for Note model.
  */
@@ -26,6 +32,20 @@ class NoteController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], // авторизованные пользователи
+                    ],
+                    [
+                        'allow' => false,
+                        'roles' => ['?'], // гости
+                    ],
+                ],
+            ]
         ];
     }
     /**
@@ -50,10 +70,17 @@ class NoteController extends Controller
     public function actionView($id)
     {
         $note = $this->findModel($id);
+        if (!$this->checkAccess($note)) {
+            throw new ForbiddenHttpException('У Вас нет доступа к данной заметке');
+        }
         $author = $note->author;
         $notes = $author->notes;
+
+        $viewModel = new NoteView();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'viewModel' => $viewModel,
         ]);
     }
     /**
@@ -63,7 +90,7 @@ class NoteController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Note();
+        $model = new NoteForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -83,11 +110,21 @@ class NoteController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        if (!$this->checkWriteAccess($model)) {
+            throw new ForbiddenHttpException();
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        $viewModel = new NoteCreateView();
+
         return $this->render('update', [
             'model' => $model,
+            'viewModel' => $viewModel,
+
         ]);
     }
     /**
@@ -99,7 +136,11 @@ class NoteController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $note = $this->findModel($id);
+        if (!$this->checkWriteAccess($note)) {
+            throw new ForbiddenHttpException();
+        }
+        $note->delete();
         return $this->redirect(['index']);
     }
     /**
@@ -126,9 +167,37 @@ class NoteController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Note::findOne($id)) !== null) {
+        if (($model = NoteForm::findOne($id)) !== null) {
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @return string
+     */
+
+    /**
+     * @param Note $note
+     *
+     * @return bool
+     */
+    protected function checkAccess(Note $note): bool
+    {
+        $currentUid = \Yii::$app->getUser()->getId();
+        if ($note->author_id == $currentUid) {
+            return true;
+        } elseif (Access::find()->andWhere(['note_id' => $note->id, 'user_id' => $currentUid])->count()) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @return bool
+     * @param Note $note
+     */
+    protected function checkWriteAccess(Note $note): bool
+    {
+        return $note->author_id == \Yii::$app->getUser()->getId();
     }
 }

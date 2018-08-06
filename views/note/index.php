@@ -1,7 +1,8 @@
 <?php
 
-use yii\helpers\Html;
+    use yii\helpers\Html;
 use yii\grid\GridView;
+use \yii\widgets\ListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\NoteSearch */
@@ -19,31 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Note', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=ListView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            [
-                'value' => 'created_at',
-                'format' => [
-                    'date',
-                    'php:d.m.Y H:i',
-                ]
-            ],
-            [
-                'value' => 'updated_at',
-                'format' => [
-                    'date',
-                    'php:d.m.Y H:i',
-                ]
-            ],
-            'author.username',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        'itemView' => '_item',
+    ]);?>
 </div>

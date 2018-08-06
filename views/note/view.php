@@ -2,17 +2,23 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\objects\ViewModels\NoteView;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Note */
+/* @var $viewModel NoteView */
 
-$this->title = $model->id;
+
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Notes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="note-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+
+    <?php if ($viewModel->canWrite($model)): ?>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -24,11 +30,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+    <?php endif; ?>
+
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
+            'name',
+            'created_at',
+            'updated_at',
+            'author_id',
         ],
     ]) ?>
 

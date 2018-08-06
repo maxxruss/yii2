@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\queries\EventQuery;
+
 
 /**
  * This is the model class for table "event".
@@ -23,6 +25,11 @@ class Event extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'event';
+    }
+
+    public static function find(): EventQuery
+    {
+        return new EventQuery(get_called_class());
     }
 
     /**
