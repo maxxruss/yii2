@@ -2,12 +2,12 @@
 
 namespace app\models\forms;
 
-use app\models\Note;
+use app\models\Event;
 use app\models\User;
 use app\models\Access;
 
 
-class NoteForm extends Note
+class EventForm extends Event
 {
     public $users = [];
 
@@ -17,7 +17,6 @@ class NoteForm extends Note
         $rules[] = ['users', 'checkUser'];
         return $rules;
     }
-
 
     /**
      * @return void
@@ -35,13 +34,13 @@ class NoteForm extends Note
     public function afterFind()
     {
         parent::afterFind();
-        $this->users = Access::find()->select(['user_id'])->andWhere(['note_id' => $this->id])->column();
+        $this->users = Access::find()->select(['user_id'])->andWhere(['event_id' => $this->id])->column();
     }
 
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        Access::deleteAll(['note_id' => $this->id]);
+        Access::deleteAll(['event_id' => $this->id]);
         foreach ($this->users as $userId) {
             Access::saveAccess($this, $userId);
         }

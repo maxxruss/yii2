@@ -19,7 +19,7 @@ class EventSearch extends Event
     {
         return [
             [['id', 'author_id'], 'integer'],
-            [['name', 'start_at', 'end_at', 'created_at', 'updated_at'], 'safe'],
+            [['name', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -47,6 +47,9 @@ class EventSearch extends Event
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 2,
+            ]
         ]);
 
         $this->load($params);
@@ -60,15 +63,18 @@ class EventSearch extends Event
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'start_at' => $this->start_at,
-            'end_at' => $this->end_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'author_id' => $this->author_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
-
+        $query->leftJoin(['access' => 'access'], 'event.id = access.event_id');
+        $query->andWhere([
+            'or',
+            ['author_id' => \Yii::$app->user->getId()],
+            ['access.user_id' => \Yii::$app->user->getId()],
+        ]);
         return $dataProvider;
     }
 }

@@ -10,7 +10,7 @@ use yii\db\ActiveQuery;
  * @property int $id
  * @property int $note_id
  * @property int $user_id
- * @property Note $note
+ * @property Event $event
  * @property User $user
  */
 class Access extends \yii\db\ActiveRecord
@@ -28,8 +28,8 @@ class Access extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['note_id', 'user_id'], 'required'],
-            [['note_id', 'user_id'], 'integer'],
+            [['event_id', 'user_id'], 'required'],
+            [['event_id', 'user_id'], 'integer'],
         ];
     }
     /**
@@ -39,7 +39,7 @@ class Access extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'note_id' => 'Note ID',
+            'event_id' => 'Event ID',
             'user_id' => 'User ID',
         ];
     }
@@ -53,22 +53,21 @@ class Access extends \yii\db\ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getNote(): ActiveQuery
+    public function getEvent(): ActiveQuery
     {
-        return $this->hasOne(Note::class, ['id' => 'note_id']);
+        return $this->hasOne(Event::class, ['id' => 'event_id']);
     }
 
     /**
-     * @param Note $note
+     * @param Event $event
      * @param int $userId
-     *
      * @return void
      */
-    public static function saveAccess(Note $note, int $userId)
+    public static function saveAccess(Event $event, int $userId)
     {
         $access = new self();
         $access->setAttributes([
-            'note_id' => $note->id,
+            'event_id' => $event->id,
             'user_id' => $userId,
         ]);
         $access->save();

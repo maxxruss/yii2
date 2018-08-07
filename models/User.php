@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  * @property string $password
  * @property string $access_token
  * @property string $authKey
- * @property Note[] $notes
+ * @property Event[] $event
  */
 
 
@@ -122,8 +122,8 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     /**
      * @return ActiveQuery
      */
-    public function getNotes(): ActiveQuery
+    public function getEvent(): ActiveQuery
     {
-        return $this->hasMany(Note::class, ['author_id' => 'id']);
+        return $this->hasMany(Event::class, ['author_id' => 'id']);
     }
 }

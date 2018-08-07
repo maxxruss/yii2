@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\objects\ViewModels\AccessCreateView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Access */
@@ -14,7 +15,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'note_id')->dropDownList($viewModel->getNoteOptions()) ?>
+    <?= $form->field($model, 'Event_id')->dropDownList($viewModel->getNoteOptions()) ?>
 
     <?= $form->field($model, 'user_id')->dropDownList($viewModel->getUserOptions()) ?>
 

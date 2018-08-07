@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use \yii\widgets\ListView;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\EventSearch */
@@ -19,21 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Event', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=ListView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'start_at',
-            'end_at',
-            'created_at',
-            //'updated_at',
-            //'author_id',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        'itemView' => '_item',
+    ]);?>
 </div>

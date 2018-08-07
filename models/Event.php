@@ -4,12 +4,14 @@ namespace app\models;
 
 use Yii;
 use app\models\queries\EventQuery;
-
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "event".
  *
  * @property int $id
+ * @property int $ids
  * @property string $name Наименование
  * @property string $start_at Начало напоминания
  * @property string $end_at Окончание напоминания
@@ -19,6 +21,8 @@ use app\models\queries\EventQuery;
  */
 class Event extends \yii\db\ActiveRecord
 {
+    public $ids = [];
+
     /**
      * {@inheritdoc}
      */
@@ -32,16 +36,36 @@ class Event extends \yii\db\ActiveRecord
         return new EventQuery(get_called_class());
     }
 
+    public function beforeSave($insert): bool
+    {
+        if (!$this->author_id) {
+            $this->author_id = \Yii::$app->getUser()->getId();
+        }
+        return parent::beforeSave($insert);
+    }
+
+    //	public function behaviors()
+//	{
+//		return [
+//			'timestamp' => [
+//				'class' => TimestampBehavior::class,
+//				'createdAtAttribute' => 'created_at',
+//				'updatedAtAttribute' => 'updated_at',
+//			],
+//		];
+//	}
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['name', 'start_at', 'end_at', 'author_id'], 'required'],
-            [['start_at', 'end_at', 'created_at', 'updated_at'], 'safe'],
-            [['author_id'], 'integer'],
+            ['id', 'integer'],
+            ['ids', 'integer'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
+            ['author_id', 'integer'],
         ];
     }
 
@@ -59,5 +83,13 @@ class Event extends \yii\db\ActiveRecord
             'updated_at' => 'Последнее обновление',
             'author_id' => 'Author ID',
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getAuthor(): ActiveQuery
+    {
+        return $this->hasOne(User::class, ['id' => 'author_id']);
     }
 }

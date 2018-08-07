@@ -1,9 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use app\objects\ViewModels\EventCreateView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Event */
+/* @var $viewModel EventCreateView */
 
 $this->title = 'Update Event: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Events', 'url' => ['index']];
@@ -16,6 +18,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'viewModel' => $viewModel,
     ]) ?>
 
 </div>

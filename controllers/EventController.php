@@ -7,10 +7,16 @@ use app\models\Event;
 use yii\filters\AccessControl;
 use app\models\search\EventSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use app\models\Access;
+use app\models\forms\EventForm;
+use app\objects\ViewModels\EventCreateView;
+use app\objects\ViewModels\EventView;
+use yii\web\Response;
 
 
 /**
@@ -70,8 +76,18 @@ class EventController extends Controller
      */
     public function actionView($id)
     {
+        $event = $this->findModel($id);
+        if (!$this->checkAccess($event)) {
+            throw new ForbiddenHttpException('У Вас нет доступа к данному событию');
+        }
+        $author = $event->author;
+        $events = $author->event;
+
+        $viewModel = new EventView();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'viewModel' => $viewModel,
         ]);
     }
 
@@ -141,14 +157,17 @@ class EventController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Event();
+        $model = new EventForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $viewModel = new EventCreateView();
+
         return $this->render('create', [
             'model' => $model,
+            'viewModel' => $viewModel,
         ]);
     }
 
@@ -163,12 +182,19 @@ class EventController extends Controller
     {
         $model = $this->findModel($id);
 
+        if (!$this->checkWriteAccess($model)) {
+            throw new ForbiddenHttpException();
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $viewModel = new EventCreateView();
+
         return $this->render('update', [
             'model' => $model,
+            'viewModel' => $viewModel,
         ]);
     }
 
@@ -181,9 +207,30 @@ class EventController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $event = $this->findModel($id);
+
+        if (!$this->checkWriteAccess($event)) {
+            throw new ForbiddenHttpException();
+        }
+        $event->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionBigForm()
+    {
+        $bodyParams = \Yii::$app->getRequest()->getBodyParams();
+        $model = new EventForm();
+        if ($model->load($bodyParams) && $model->createUserAndSave())  {
+            return $this->redirect(['event/view', 'id' => $model->id]);
+        }
+        return $this->render('big-form', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -195,10 +242,35 @@ class EventController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Event::findOne($id)) !== null) {
+        if (($model = EventForm::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @return string
+     *
+     * @param Event $event
+     *
+     * @return bool
+     */
+    protected function checkAccess(Event $event): bool
+    {
+        $currentUid = \Yii::$app->getUser()->getId();
+        if ($event->author_id == $currentUid) {
+            return true;
+        } elseif (Access::find()->andWhere(['event_id' => $event->id, 'user_id' => $currentUid])->count()) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * @return bool
+     * @param Event $event
+     */
+    protected function checkWriteAccess(Event $event): bool
+    {
+        return $event->author_id == \Yii::$app->getUser()->getId();
     }
 }

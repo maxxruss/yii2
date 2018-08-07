@@ -1,8 +1,9 @@
 <?php
 namespace app\objects\ViewModels;
+
 use app\models\User;
 
-class NoteCreateView
+class EventCreateView
 {
     /**
      * @return array

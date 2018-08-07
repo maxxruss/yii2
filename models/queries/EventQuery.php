@@ -15,11 +15,6 @@ class EventQuery extends ActiveQuery
     public function byDates(array $dates): self
     {
 
-        return $this->andWhere([
-            'in',
-            'created_at',
-            //date('Y-m-d.',strtotime('created_at')),
-            $dates
-        ]);
+        return $this->andWhere(['in', 'created_at', $dates]);
     }
 }

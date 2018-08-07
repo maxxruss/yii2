@@ -1,8 +1,8 @@
 <?php
-use app\models\forms\NoteForm;
+use app\models\forms\EventForm;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-/* @var $model NoteForm */
+/* @var $model EventForm */
 ?>
 
 <?php $form = ActiveForm::begin();?>
