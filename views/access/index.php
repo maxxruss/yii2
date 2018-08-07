@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'id',
-            'note.name:raw',
+            'event.name:raw',
             [
                 'value' => function (\app\models\Access $model) {
                     return Html::a($model->user->username, ['user/view', 'id' => $model->id]);
@@ -39,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
             ['class' => 'yii\grid\ActionColumn',
-                'template' => '{view}  {delete}',
+                'template' => '{view}{update}{delete}',
                 'visibleButtons' => [
-                    'delete' => false
+                    //'delete' => false
                 ],
             ]
         ],

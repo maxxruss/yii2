@@ -20,9 +20,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Event', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?=ListView::widget([
+    <?=
+    /**d($dataProvider);
+    exit;**/
+    GridView::widget([
         'dataProvider' => $dataProvider,
-        'itemView' => '_item',
+        //'itemView' => '_item',
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'id',
+            'name:raw',
+            'author_id:raw',
+            ['class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete} ',
+                'visibleButtons' => [
+                    //'delete' => false
+                ],
+            ]
+        ],
     ]);?>
 </div>

@@ -8,7 +8,7 @@ use yii\db\ActiveQuery;
  * This is the model class for table "access".
  *
  * @property int $id
- * @property int $note_id
+ * @property int $event_id
  * @property int $user_id
  * @property Event $event
  * @property User $user

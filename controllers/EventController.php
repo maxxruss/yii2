@@ -183,8 +183,12 @@ class EventController extends Controller
         $model = $this->findModel($id);
 
         if (!$this->checkWriteAccess($model)) {
-            throw new ForbiddenHttpException();
+            throw new ForbiddenHttpException('Редактировать событие может только автор');
         }
+
+        if ($this->checkPastEvent($model)) {
+            throw new ForbiddenHttpException('Прошедшее событие редактировать нельзя');
+        };
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -210,8 +214,13 @@ class EventController extends Controller
         $event = $this->findModel($id);
 
         if (!$this->checkWriteAccess($event)) {
-            throw new ForbiddenHttpException();
+            throw new ForbiddenHttpException('Удалять событие может только автор');
         }
+
+        if ($this->checkPastEvent($event)) {
+            throw new ForbiddenHttpException('Прошедшее событие удалить нельзя');
+        };
+
         $event->delete();
 
         return $this->redirect(['index']);
@@ -272,5 +281,11 @@ class EventController extends Controller
     protected function checkWriteAccess(Event $event): bool
     {
         return $event->author_id == \Yii::$app->getUser()->getId();
+    }
+
+    protected function checkPastEvent(Event $event)
+    {
+        //return [strtotime($event->end_at), strtotime(date('m-d-Y h:i:s'))];
+        return (strtotime($event->end_at)<strtotime(date('m-d-Y h:i:s')));
     }
 }

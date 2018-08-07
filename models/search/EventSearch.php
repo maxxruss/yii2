@@ -48,7 +48,7 @@ class EventSearch extends Event
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 2,
+                'pageSize' => 6,
             ]
         ]);
 
@@ -57,7 +57,7 @@ class EventSearch extends Event
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-            return $dataProvider;
+            //return $dataProvider;
         }
 
         // grid filtering conditions

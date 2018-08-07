@@ -15,7 +15,7 @@ use app\objects\ViewModels\AccessCreateView;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'Event_id')->dropDownList($viewModel->getNoteOptions()) ?>
+    <?= $form->field($model, 'event_id')->dropDownList($viewModel->getNoteOptions()) ?>
 
     <?= $form->field($model, 'user_id')->dropDownList($viewModel->getUserOptions()) ?>
 

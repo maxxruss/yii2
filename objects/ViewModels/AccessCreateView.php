@@ -1,6 +1,6 @@
 <?php
 namespace app\objects\ViewModels;
-use app\models\Note;
+use app\models\Event;
 use app\models\User;
 use yii\helpers\BaseArrayHelper;
 
@@ -11,7 +11,7 @@ class AccessCreateView
      */
     public function getNoteOptions(): array
     {
-        $models = Note::find()->all();
+        $models = Event::find()->all();
         return BaseArrayHelper::map($models, 'id', 'name');
     }
     /**

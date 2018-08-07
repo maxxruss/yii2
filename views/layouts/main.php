@@ -39,7 +39,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Календарь', 'url' => ['/event/calendar']],
-            ['label' => 'Заметки', 'url' => ['/note/index']],
+            ['label' => 'События', 'url' => ['/event/index']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Вход', 'url' => ['/site/login']]
             ) : (
