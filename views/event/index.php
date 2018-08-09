@@ -40,4 +40,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ],
     ]);?>
+    <?=\app\widgets\MyWidget::widget([
+    ]);?>
+
+
 </div>

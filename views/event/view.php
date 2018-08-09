@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?php endif; ?>
 
-    <?php if ($this->beginCache('note-view-time', ['duration' => 1])):?>
+    <?php if ($this->beginCache('note-view-time', ['duration' => 60])):?>
         <div>
             Текущее время:
             <?=date('d.m.Y H:i:s');?>
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=$this->endCache();?>
     <?php endif;?>
 
-<?php if ($this->beginCache('event-view-time1', ['duration'=>1])):?>
+<?php if ($this->beginCache('event-view-time1', ['duration'=>60])):?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
