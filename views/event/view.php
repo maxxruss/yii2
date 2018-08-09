@@ -12,6 +12,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Events', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="event-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -30,7 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?php endif; ?>
 
+    <?php if ($this->beginCache('note-view-time', ['duration' => 1])):?>
+        <div>
+            Текущее время:
+            <?=date('d.m.Y H:i:s');?>
+        </div>
+        <?=$this->endCache();?>
+    <?php endif;?>
 
+<?php if ($this->beginCache('event-view-time1', ['duration'=>1])):?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -41,5 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'author_id',
         ],
     ]) ?>
+    <?= $this->endCache();?>
+    <?php endif; ?>
 
 </div>

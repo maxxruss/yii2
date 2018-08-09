@@ -1,15 +1,20 @@
 <?php
 
+use yii\caching\DummyCache;
+use yii\redis\Cache;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$redis = require __DIR__ . '/redis.php';
+
 
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
-    'defaultRoute' => 'note/index',
-    'name' => 'Заметки',
+    'defaultRoute' => 'event/index',
+    'name' => 'События',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -20,7 +25,7 @@ $config = [
             'cookieValidationKey' => 'xqhEosU-mmp_X2_ZwV2V4ZZ4SrOajSfI',
         ],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => Cache::class,
         ],
         'user' => [
             'identityClass' => 'app\models\User',
@@ -45,6 +50,7 @@ $config = [
                 ],
             ],
         ],
+        'redis' => $redis,
         'db' => $db,
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -71,7 +77,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '*'],
     ];
 }
 

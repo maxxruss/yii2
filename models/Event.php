@@ -92,4 +92,9 @@ class Event extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'author_id']);
     }
+
+    public function getAccess(): ActiveQuery
+    {
+        return $this->hasOne(Access::class, ['event_id' => 'id']);
+    }
 }

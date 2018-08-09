@@ -5,7 +5,7 @@ use app\objects\ViewModels\AccessCreateView;
 use yii\filters\AccessControl;
 use Yii;
 use app\models\Access;
-use app\models\search\AccessSearch as AccessSearch;
+use app\models\search\AccessSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

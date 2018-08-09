@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Event;
+use yii\caching\DbDependency;
+use yii\caching\ExpressionDependency;
 
 /**
  * EventSearch represents the model behind the search form of `app\models\Event`.
@@ -42,13 +44,14 @@ class EventSearch extends Event
     public function search($params)
     {
         $query = Event::find();
+        $query->cache(60*60);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 6,
+                'pageSize' => 10,
             ]
         ]);
 

@@ -17,6 +17,9 @@ use app\models\forms\EventForm;
 use app\objects\ViewModels\EventCreateView;
 use app\objects\ViewModels\EventView;
 use yii\web\Response;
+use DateTime;
+use yii\filters\HttpCache;
+
 
 
 /**
@@ -49,6 +52,18 @@ class EventController extends Controller
                         'roles' => ['?'], // гости
                     ],
                 ],
+            ],
+            'cache' => [
+                'class' => HttpCache::class,
+                'only' => ['view'],
+                'lastModified' => function () {
+                    $id = (int) \Yii::$app->getRequest()->getQueryParam('id');
+                    $model = $this->findModel($id);
+                    return \strtotime($model->updated_at);
+                },
+//				'etagSeed' => function ($action, $params) {
+//
+//				}
             ]
         ];
     }
@@ -190,6 +205,8 @@ class EventController extends Controller
             throw new ForbiddenHttpException('Прошедшее событие редактировать нельзя');
         };
 
+        $model->updated_at=date('Y-m-d h:i:s');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -285,7 +302,6 @@ class EventController extends Controller
 
     protected function checkPastEvent(Event $event)
     {
-        //return [strtotime($event->end_at), strtotime(date('m-d-Y h:i:s'))];
-        return (strtotime($event->end_at)<strtotime(date('m-d-Y h:i:s')));
+        return (strtotime($event->end_at)<strtotime(date('Y-m-d h:i:s')));
     }
 }
