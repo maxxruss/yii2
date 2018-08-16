@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\objects\ViewModels\EventCreateView;
+use kartik\widgets\Select2;
 
 
 /* @var $this yii\web\View */
@@ -18,11 +19,18 @@ use app\objects\ViewModels\EventCreateView;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'users')
+    <?php /*$form->field($model, 'users')
         ->checkboxList($viewModel->getUserOptions(), ['separator' => '<br/>'])
         ->label('Пользователи')
         ->hint('Пользователи, которые будут иметь доступ к заметке')
-    ?>
+    */?>
+
+    <?= $form->field($model, 'users')->widget(Select2::class, [
+        'data' => $viewModel->getUserOptions(),
+        'options' => [
+            'multiple' => true,
+        ],
+    ]);?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

@@ -59,7 +59,18 @@ $config = [
                 '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
             ],
         ],
-
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                ],
+            ],
+        ],
+        'max'=>[//Yii::$app->max
+            'class'=>\app\components\MaxComponent::class,
+            'title' => 'super',
+            'body' => 'man'
+        ]
     ],
     'params' => $params,
 ];
