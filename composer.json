@@ -23,7 +23,8 @@
         "yiisoft/yii2-redis": "^2.0",
         "clue/redis-server": "^0.1.0",
         "dmstr/yii2-adminlte-asset": "^2.1",
-        "kartik-v/yii2-widgets": "*"
+        "kartik-v/yii2-widgets": "*",
+        "vlucas/phpdotenv": "^2.5"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -15,7 +15,8 @@ use kartik\widgets\Select2;
 
 <div class="event-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin();
+    //d($model, $viewModel);exit;?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

@@ -10,14 +10,10 @@ use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
-use yii\db\ActiveQuery;
 use app\models\Access;
 use app\models\forms\EventForm;
 use app\objects\ViewModels\EventCreateView;
 use app\objects\ViewModels\EventView;
-use yii\web\Response;
-use DateTime;
 use yii\filters\HttpCache;
 
 
@@ -165,7 +161,7 @@ class EventController extends Controller
 
     }
 
-    /**
+        /**
      * Creates a new Event model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -173,12 +169,15 @@ class EventController extends Controller
     public function actionCreate()
     {
         $model = new EventForm();
+        //d($model);exit;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         $viewModel = new EventCreateView();
+        //d($viewModel);exit;
+
 
         return $this->render('create', [
             'model' => $model,

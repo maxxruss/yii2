@@ -35,6 +35,7 @@ class EventForm extends Event
     {
         parent::afterFind();
         $this->users = Access::find()->select(['user_id'])->andWhere(['event_id' => $this->id])->column();
+        //d($this->users);exit;
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -44,5 +45,6 @@ class EventForm extends Event
         foreach ($this->users as $userId) {
             Access::saveAccess($this, $userId);
         }
+
     }
 }
